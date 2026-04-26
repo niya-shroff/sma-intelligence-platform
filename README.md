@@ -157,6 +157,12 @@ KAFKA_BROKER=kafka:9092
 docker-compose up --build
 ```
 
+Once running, the application will be exposed on the following ports:
+* **Frontend UI**: [http://localhost:5173](http://localhost:5173)
+* **Backend API**: [http://localhost:8000](http://localhost:8000)
+
+*(Troubleshooting note: If Postgres fails to start with "init.sql: error: could not read from input file: Is a directory", run `docker-compose down -v` to clear cached volume bindings and run `docker-compose up --build` again.)*
+
 ### Backend (local)
 
 ```bash

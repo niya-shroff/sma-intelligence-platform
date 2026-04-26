@@ -40,6 +40,34 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
 
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: sma_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - redis
+      - influxdb
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sma_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+    depends_on:
+      - backend
+
 volumes:
   influxdb_data:
   redis_data:
