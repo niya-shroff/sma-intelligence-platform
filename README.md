@@ -211,18 +211,17 @@ pytest
 
 ---
 
-## Documentation
+## Future Plans & Research Areas
 
-See the `docs/` directory for more detail:
-
-* architecture overview
-* SMA definitions
-* agent design
-
----
-
-## Future Enhancements
-
+* https://fred.stlouisfed.org/docs/api/fred/ (API for historical economic data series)
+* https://huggingface.co/datasets/gbharti/wealth-alpaca_lora (dataset of financial-advice conversations)
+* https://huggingface.co/datasets/zongowo111/v2-crypto-ohlcv-data (dataset of crypto OHLCV data)
+* https://huggingface.co/datasets/raeidsaqur/NIFTY (dataset of NIFTY OHLCV data)
+* https://www.alphavantage.co/documentation/ (API for historical market data)
+* https://finnhub.io/docs/api/introduction (API for real-time market data)
+* https://polygon.io/docs/trading-apis (API for real-time market data)
+* https://docs.polygon.io/reference-guides/python/getting-started/ (Polygon.io Python SDK)
+* https://polars.is/docs/ (High-performance DataFrame library for Python)
 * Add the capability to run strategies live on a brokerage account
 * Expand the number of agents and capabilities
 * Use the platform to analyze Raul's system more deeply and improve on it.
@@ -234,12 +233,6 @@ See the `docs/` directory for more detail:
 
 ---
 
-This project is structured to be modular. Most components (ML, agents, RAG) can be developed or replaced independently without affecting the rest of the system.
-
----
-
 ## License
 
 Apache 2.0 License
-
----
