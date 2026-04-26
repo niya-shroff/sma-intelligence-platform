@@ -221,7 +221,18 @@ See the `docs/` directory for more detail:
 
 ---
 
-## Notes
+## Future Enhancements
+
+* Add the capability to run strategies live on a brokerage account
+* Expand the number of agents and capabilities
+* Use the platform to analyze Raul's system more deeply and improve on it.
+* Improve the UI/UX.
+* Potentially deploy the frontend and backend in a more user-friendly way, as an application.
+* Integrate real finance APIs like Yahoo Finance's via yfinance 1.3.0, AlphaVantage, Finnhub, or Polygon.io.
+* Consider adding AI-powered signal generation and analysis, potentially using large language models to interpret market data and generate trading signals. This would allow the platform to identify complex patterns and relationships that might not be apparent through traditional technical analysis.
+* In the agents section, integrate LLMs like GPT-4 or Claude 3.5 to provide more sophisticated analysis and insights. This would allow the platform to identify complex patterns and relationships that might not be apparent through traditional technical analysis.
+
+---
 
 This project is structured to be modular. Most components (ML, agents, RAG) can be developed or replaced independently without affecting the rest of the system.
 
