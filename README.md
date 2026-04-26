@@ -1,6 +1,6 @@
 # SMA Intelligence Platform
 
-An end-to-end platform for building, testing, and analyzing trading strategies based on Simple Moving Averages (SMA), with extensions into machine learning, signal generation, and agent-based analysis. A simulation of Raul's original analysis. Their original README has been moved to 'RAUL_README.md' and all credit goes to them. Please visit https://github.com/raultrades/SMA-outfits to learn more about the inspiration behind this visual simulation.
+An end-to-end platform for building, testing, and analyzing trading strategies based on Simple Moving Averages (SMA), with extensions into machine learning, signal generation, and agent-based analysis. A simulation of Raul's original analysis. Their original README has been moved to 'RAUL_README.md' and all analysis credit goes to them. Please visit https://github.com/raultrades/SMA-outfits to learn more about the inspiration behind this visual simulation.
 
 <img width="800" height="437" alt="ezgif-8631908a4f17ab54" src="https://github.com/user-attachments/assets/4e351661-cb8d-44b9-aa4b-18dc688fba82" />
 
