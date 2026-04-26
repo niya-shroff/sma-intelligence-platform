@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  # Time-series database for OHLCV + signals
+  influxdb:
+    image: influxdb:2.7
+    container_name: sma_influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=sma_admin_pass
+      - DOCKER_INFLUXDB_INIT_ORG=sma_platform
+      - DOCKER_INFLUXDB_INIT_BUCKET=market_data
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=local-dev-token
+
+  # Cache + pub/sub for real-time signal fan-out
+  redis:
+    image: redis:7-alpine
+    container_name: sma_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # Relational store for config, ML metadata, audit logs
+  postgres:
+    image: postgres:16-alpine
+    container_name: sma_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: sma_user
+      POSTGRES_PASSWORD: sma_pass
+      POSTGRES_DB: sma_platform
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  influxdb_data:
+  redis_data:
+  postgres_data:
