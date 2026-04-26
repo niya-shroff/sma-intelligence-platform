@@ -1,150 +1,218 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  AreaChart, Area
-} from 'recharts'
-import { Activity, LayoutDashboard, BrainCircuit, TerminalSquare, Send } from 'lucide-react'
-import './index.css'
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer
+} from 'recharts';
+import { Activity, LayoutDashboard, BrainCircuit, TerminalSquare, Send, Info, Eye, ShieldAlert, Cpu } from 'lucide-react';
+import './index.css';
 
-const API_BASE = 'http://localhost:8000'
+const API_BASE = 'http://localhost:8000';
 
-function App() {
-  const [marketData, setMarketData] = useState([])
-  const [signals, setSignals] = useState([])
-  const [chatHistory, setChatHistory] = useState([
-    { role: 'agent', content: 'SMA-Analyst-01 initialized. Monitoring S&P 500, NASDAQ, and Dow Jones parameters. How can I assist you?' }
-  ])
-  const [chatInput, setChatInput] = useState('')
-
-  useEffect(() => {
-    // Fetch mock data from our backend
-    const fetchData = async () => {
-      try {
-        const marketRes = await axios.get(`${API_BASE}/market`)
-        setMarketData(marketRes.data.data)
-
-        const signalsRes = await axios.get(`${API_BASE}/signals`)
-        setSignals(signalsRes.data.signals)
-      } catch (error) {
-        console.error("Error fetching data:", error)
-        // Fallback mock data in case backend isn't running yet
-        setMarketData(Array.from({length: 30}).map((_, i) => ({
-          date: `2024-04-${i+1}`,
-          close: 5000 + Math.random() * 200 - 100
-        })))
-        setSignals([
-          { id: '1', type: 'Buy', outfit: '10/50/200', price: 5050.25, confidence: 0.92, symbol: 'SPX' },
-          { id: '2', type: 'Hold', outfit: '20/100/250', price: 18000.5, confidence: 0.75, symbol: 'IXIC' },
-        ])
-      }
-    }
-    fetchData()
-  }, [])
-
-  const handleChatSubmit = async (e) => {
-    e.preventDefault()
-    if (!chatInput.trim()) return
-
-    const userMsg = chatInput
-    setChatHistory(prev => [...prev, { role: 'user', content: userMsg }])
-    setChatInput('')
-
-    try {
-      const res = await axios.post(`${API_BASE}/agents/chat`, { message: userMsg })
-      setChatHistory(prev => [...prev, { role: 'agent', content: res.data.response }])
-    } catch (error) {
-      setChatHistory(prev => [...prev, { role: 'agent', content: 'Simulated response: The precision algorithm is currently optimizing. Please hold.' }])
-    }
-  }
+function InfoBlurb({ title, text }) {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="dashboard-container">
-      {/* Sidebar */}
-      <aside className="sidebar">
-        <div className="logo">
-          <Activity size={24} />
-          <span>SMA</span> Platform
+    <div className="info-blurb-wrapper" onMouseLeave={() => setIsOpen(false)}>
+      <button className="info-icon" onClick={() => setIsOpen(!isOpen)} onMouseEnter={() => setIsOpen(true)}>
+        <Info size={16} />
+      </button>
+      {isOpen && (
+        <div className="info-tooltip">
+          <h4>{title}</h4>
+          <p>{text}</p>
         </div>
-        <nav className="nav-links mt-8">
-          <div className="nav-link active"><LayoutDashboard size={20} /> Dashboard</div>
-          <div className="nav-link"><BrainCircuit size={20} /> Models</div>
-          <div className="nav-link"><TerminalSquare size={20} /> Agents</div>
+      )}
+    </div>
+  );
+}
+
+function App() {
+  const [marketData, setMarketData] = useState([]);
+  const [signals, setSignals] = useState([]);
+  const [chatHistory, setChatHistory] = useState([
+    { role: 'agent', content: 'SMA-Analyst-01 online. Monitoring specific SMA outfits like the S&P 10/50/200 system for Institutional Precision Buying.' }
+  ]);
+  const [chatInput, setChatInput] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const marketRes = await axios.get(`${API_BASE}/market`);
+        setMarketData(marketRes.data.data);
+
+        const signalsRes = await axios.get(`${API_BASE}/signals`);
+        setSignals(signalsRes.data.signals);
+      } catch (error) {
+        console.error("Backend offline, using fallback data.");
+      }
+    };
+    fetchData();
+    const interval = setInterval(fetchData, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleChatSubmit = async (e) => {
+    e.preventDefault();
+    if (!chatInput.trim()) return;
+
+    const userMsg = chatInput;
+    setChatHistory(prev => [...prev, { role: 'user', content: userMsg }]);
+    setChatInput('');
+
+    try {
+      const res = await axios.post(`${API_BASE}/agents/chat`, { message: userMsg });
+      setChatHistory(prev => [...prev, { role: 'agent', content: res.data.response }]);
+    } catch (error) {
+      setChatHistory(prev => [...prev, { role: 'agent', content: 'Analyzing market conditions based on SMA configuration...' }]);
+    }
+  };
+
+  return (
+    <div className="dashboard">
+      <aside className="sidebar">
+        <div className="brand">
+          <Activity size={28} className="brand-icon" />
+          <div className="brand-text">
+            <span>SMA</span> Operations
+          </div>
+        </div>
+        <nav className="nav-menu">
+          <a href="#" className="nav-item active"><LayoutDashboard size={20} /> Master Control</a>
+          <a href="#" className="nav-item"><Cpu size={20} /> Algorithms</a>
+          <a href="#" className="nav-item"><ShieldAlert size={20} /> Dark Pools</a>
+          <a href="#" className="nav-item"><BrainCircuit size={20} /> Neural Net</a>
         </nav>
+
+        <div className="sidebar-education">
+          <h4>Platform Guide</h4>
+          <p>This platform visualizes how massive financial institutions use specific moving averages (SMAs) to operate the market.</p>
+        </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="main-content">
-        <header className="header">
-          <h1>Intelligence Overview</h1>
-          <div className="flex items-center gap-4 text-sm text-text-secondary">
-            <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-success"></span> Data Feed: Active</span>
+      <main className="main-view">
+        <header className="topbar">
+          <div className="header-title">
+            <h1>Institutional Intelligence Tracker</h1>
+            <InfoBlurb 
+              title="What is this?" 
+              text="This dashboard models the 'Raul Analysis' which states that global wealth operators use specific sets of numbers (SMA Outfits) to trigger massive automated buying and selling in the stock market." 
+            />
+          </div>
+          <div className="status-indicator">
+            <span className="pulse-dot"></span>
+            System Live: Institutional Session
           </div>
         </header>
 
-        <div className="grid-container">
+        <div className="bento-grid">
+          
           {/* Main Chart */}
-          <div className="card animate-fade-in" style={{ gridColumn: '1 / 2', gridRow: '1 / 2' }}>
-            <div className="card-header">
-              <span>S&P 500 (SPX)</span>
-              <span className="text-sm font-normal">30M / 10/50/200 Setup</span>
+          <div className="panel chart-panel">
+            <div className="panel-header">
+              <h2>S&P 500 Simulation</h2>
+              <InfoBlurb 
+                title="The Core System" 
+                text="The S&P 500 uses a 10/50/200 SMA configuration. When the 10-day average drops below the 50-day average, large institutions are often shorting the market. When it rises above, they trigger 'Precision Buying'." 
+              />
             </div>
-            <div className="chart-area">
+            <div className="chart-container">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={marketData}>
                   <defs>
                     <linearGradient id="colorClose" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="var(--accent-blue)" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="var(--accent-blue)" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.4}/>
+                      <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
-                  <XAxis dataKey="date" stroke="#94a3b8" tick={{fontSize: 12}} />
-                  <YAxis domain={['auto', 'auto']} stroke="#94a3b8" tick={{fontSize: 12}} />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
-                    itemStyle={{ color: '#f8fafc' }}
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                  <XAxis dataKey="date" stroke="#a3a3a3" tick={{fontSize: 11}} axisLine={false} tickLine={false} />
+                  <YAxis domain={['auto', 'auto']} stroke="#a3a3a3" tick={{fontSize: 11}} axisLine={false} tickLine={false} />
+                  <RechartsTooltip 
+                    contentStyle={{ backgroundColor: '#171717', border: '1px solid #262626', borderRadius: '8px' }}
+                    itemStyle={{ color: '#f5f5f5' }}
                   />
-                  <Area type="monotone" dataKey="close" stroke="var(--accent-blue)" fillOpacity={1} fill="url(#colorClose)" />
+                  <Area type="monotone" dataKey="close" stroke="#818cf8" strokeWidth={2} fillOpacity={1} fill="url(#colorClose)" />
+                  <Area type="monotone" dataKey="sma50" stroke="#fbbf24" strokeWidth={1.5} fillOpacity={0} />
+                  <Area type="monotone" dataKey="sma200" stroke="#f87171" strokeWidth={1.5} fillOpacity={0} />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
 
+          {/* Active Outfits */}
+          <div className="panel outfits-panel">
+            <div className="panel-header">
+              <h2>Active SMA Outfits</h2>
+              <InfoBlurb 
+                title="SMA Outfits" 
+                text="These are specific number sequences used like passwords. For example, the Dow Jones strictly uses 30, 60, 90, 300, 600, 900 to dictate when to buy or sell." 
+              />
+            </div>
+            <div className="outfits-list">
+              <div className="outfit-card">
+                <div className="outfit-name">S&P 500</div>
+                <div className="outfit-values">10 / 50 / 200</div>
+                <div className="outfit-status positive">Active Buying</div>
+              </div>
+              <div className="outfit-card">
+                <div className="outfit-name">NASDAQ</div>
+                <div className="outfit-values">20 / 100 / 250</div>
+                <div className="outfit-status neutral">Consolidating</div>
+              </div>
+              <div className="outfit-card">
+                <div className="outfit-name">Dow Jones</div>
+                <div className="outfit-values">30 / 60 / 90 / 300 / 600 / 900</div>
+                <div className="outfit-status negative">Short Triggered</div>
+              </div>
+            </div>
+          </div>
+
           {/* Signal Stream */}
-          <div className="card animate-fade-in" style={{ gridColumn: '2 / 3', gridRow: '1 / 3', animationDelay: '0.1s' }}>
-            <div className="card-header">Live Signals</div>
-            <div className="signal-list">
+          <div className="panel signals-panel">
+            <div className="panel-header">
+              <h2>Institutional Activity</h2>
+              <InfoBlurb 
+                title="Market Operations" 
+                text="'Precision Buying Algorithms' are bots that buy exactly at certain SMA numbers to move the market. 'Dark Pools' are private exchanges used to hide these massive trades from the public." 
+              />
+            </div>
+            <div className="signals-feed">
               {signals.map((sig, i) => (
-                <div key={i} className={`signal-item ${sig.type.toLowerCase()}`}>
-                  <div className="signal-info">
-                    <span className={`signal-type ${sig.type.toLowerCase()}`}>{sig.type} {sig.symbol}</span>
-                    <span className="signal-meta">{sig.outfit} • Conf: {(sig.confidence * 100).toFixed(0)}%</span>
+                <div key={i} className={`signal-item ${sig.type.toLowerCase().replace(/\s+/g, '-')}`}>
+                  <div className="signal-icon">
+                    <Eye size={18} />
                   </div>
-                  <div className="text-right">
-                    <div className="font-semibold">${sig.price.toFixed(2)}</div>
-                    <div className="text-xs text-text-secondary">Just now</div>
+                  <div className="signal-details">
+                    <div className="signal-title">{sig.type} <span>({sig.symbol})</span></div>
+                    <div className="signal-desc">Trigger: {sig.outfit} • Conf: {(sig.confidence * 100).toFixed(0)}%</div>
                   </div>
+                  <div className="signal-price">${sig.price.toFixed(2)}</div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Agent Chat */}
-          <div className="card animate-fade-in" style={{ gridColumn: '1 / 2', gridRow: '2 / 3', animationDelay: '0.2s', minHeight: '300px' }}>
-            <div className="card-header">Research Agent</div>
-            <div className="chat-container">
+          <div className="panel chat-panel">
+            <div className="panel-header">
+              <h2>AI Market Analyst</h2>
+              <InfoBlurb 
+                title="AI Analyst" 
+                text="Ask this agent about what the current moving averages mean. It analyzes the market pretending to be the institutional algorithms." 
+              />
+            </div>
+            <div className="chat-area">
               <div className="chat-messages">
                 {chatHistory.map((msg, i) => (
-                  <div key={i} className={`chat-message ${msg.role}`}>
+                  <div key={i} className={`chat-bubble ${msg.role}`}>
                     {msg.content}
                   </div>
                 ))}
               </div>
-              <form className="chat-input" onSubmit={handleChatSubmit}>
+              <form className="chat-input-wrapper" onSubmit={handleChatSubmit}>
                 <input 
                   type="text" 
-                  placeholder="Ask about current SMA outfits or specific tickers..." 
+                  placeholder="Ask about Dark Pools or Precision Buying..." 
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                 />
@@ -152,10 +220,11 @@ function App() {
               </form>
             </div>
           </div>
+
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
