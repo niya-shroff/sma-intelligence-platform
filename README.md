@@ -227,6 +227,18 @@ pytest
 
 ---
 
+## Current Mocked Data Implementation
+
+While the platform is designed to connect to live data sources, local development currently uses mocked data generators in the `backend/app/api/` routes to simulate market conditions:
+
+* **Market Data (`market.py`)**: Generates 60 days of simulated OHLCV data. It produces a slow-trending price walk with randomized daily fluctuations and automatically calculates simulated 50-day and 200-day SMA offsets for charting.
+* **Signals (`signals.py`)**: Simulates real-time trading signals ("Precision Buying", "Automated Short", "Dark Pool Accumulation", "Magnetized Order") triggered across various SMA outfits (e.g., 10/50/200, 30/60/90) with randomized confidence metrics.
+* **Agents (`agents.py`)**: Simulates an AI analyst returning pre-scripted domain-specific observations about bullish divergences, dark pool accumulation, and automated order execution.
+* **Machine Learning (`ml.py`)**: Mocks a predictive engine (labeled `v1.0-mock`) that returns randomized directional biases ("Up", "Down", "Neutral") and probability scores.
+* **Economics (`economics.py`)**: Mocks macroeconomic conditions by generating randomized but realistic ranges for Interest Rates (4.5-5.5%), Inflation/CPI, GDP Growth, and Unemployment alongside directional statuses (Rising/Falling).
+
+---
+
 ## Future Plans & Research Areas
 
 * https://fred.stlouisfed.org/docs/api/fred/ (API for historical economic data series)
