@@ -1,3 +1,22 @@
+# SMA Intelligence Platform
+
+An end-to-end platform for building, testing, and analyzing trading strategies based on Simple Moving Averages (SMA), with extensions into machine learning, signal generation, and agent-based analysis. A simulation of Raul's original analysis. Their README is in 'RAUL_README.md'
+
+## Overview
+
+This project brings together market data processing, SMA-based strategy logic, machine learning models, and lightweight AI agents into a single system. It’s designed to support both experimentation and structured analysis of trading signals.
+
+The platform includes:
+
+* A backend API for data, signals, and models
+* A frontend for visualization and interaction
+* Supporting pipelines for ML and retrieval-based workflows
+
+---
+
+## Project Structure
+
+```text
 sma-intelligence-platform/
 │
 ├── README.md
@@ -9,33 +28,10 @@ sma-intelligence-platform/
 │   ├── app/
 │   │   ├── main.py
 │   │   ├── api/
-│   │   │   ├── routes_market.py
-│   │   │   ├── routes_signals.py
-│   │   │   ├── routes_ml.py
-│   │   │   ├── routes_agents.py
-│   │   │
 │   │   ├── core/
-│   │   │   ├── config.py
-│   │   │   ├── database.py
-│   │   │   ├── schemas.py
-│   │   │
 │   │   ├── services/
-│   │   │   ├── market_data.py
-│   │   │   ├── sma_engine.py
-│   │   │   ├── signal_engine.py
-│   │   │   ├── feature_engine.py
-│   │   │   ├── backtester.py
-│   │   │   ├── ml_model.py
-│   │   │
 │   │   ├── agents/
-│   │   │   ├── research_agent.py
-│   │   │   ├── signal_agent.py
-│   │   │   ├── anomaly_agent.py
-│   │   │
 │   │   ├── rag/
-│   │   │   ├── embedder.py
-│   │   │   ├── vector_store.py
-│   │   │   ├── retriever.py
 │   │
 │   ├── tests/
 │
@@ -43,15 +39,7 @@ sma-intelligence-platform/
 │   ├── src/
 │   │   ├── app.jsx
 │   │   ├── components/
-│   │   │   ├── Chart.jsx
-│   │   │   ├── SMAControls.jsx
-│   │   │   ├── SignalPanel.jsx
-│   │   │   ├── MLPanel.jsx
-│   │   │   ├── AgentChat.jsx
-│   │   │
 │   │   ├── services/
-│   │   │   ├── api.js
-│   │   │   ├── websocket.js
 │
 ├── data/
 │   ├── raw/
@@ -77,3 +65,164 @@ sma-intelligence-platform/
     ├── architecture.md
     ├── sma_definitions.md
     ├── agent_design.md
+```
+
+---
+
+## Core Components
+
+### Backend
+
+Built with FastAPI. Handles:
+
+* Market data access
+* SMA calculations
+* Signal generation
+* ML inference
+* Agent endpoints
+
+### Services Layer
+
+Contains most of the logic:
+
+* `market_data.py` – data ingestion and retrieval
+* `sma_engine.py` – moving average calculations
+* `signal_engine.py` – trading signals
+* `feature_engine.py` – feature generation for ML
+* `ml_model.py` – model loading and predictions
+* `backtester.py` – strategy evaluation
+
+### Agents
+
+Simple task-focused agents:
+
+* Research agent for context and summaries
+* Signal agent for explaining outputs
+* Anomaly agent for detecting irregular patterns
+
+### Frontend
+
+React-based UI with:
+
+* Charting
+* SMA controls
+* Signal display
+* ML output panel
+* Agent chat interface
+
+### ML Pipeline
+
+Located in `/ml`:
+
+* Feature construction
+* Model training
+* Evaluation scripts
+
+### RAG Components
+
+Used for retrieval-based responses:
+
+* Embedding generation
+* Vector storage
+* Query-time retrieval
+
+---
+
+## Setup
+
+### Clone the repository
+
+```bash
+git clone https://github.com/your-org/sma-intelligence-platform.git
+cd sma-intelligence-platform
+```
+
+### Environment variables
+
+Create a `.env` file:
+
+```env
+DATABASE_URL=postgresql://user:password@db:5432/sma_db
+REDIS_URL=redis://redis:6379
+KAFKA_BROKER=kafka:9092
+```
+
+---
+
+## Running the project
+
+### With Docker
+
+```bash
+docker-compose up --build
+```
+
+### Backend (local)
+
+```bash
+cd backend
+pip install -r ../requirements.txt
+uvicorn app.main:app --reload
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## API
+
+* `/market` – market data
+* `/signals` – generated signals
+* `/ml` – model predictions
+* `/agents` – agent interaction
+
+---
+
+## Testing
+
+```bash
+cd backend
+pytest
+```
+
+---
+
+## Data Flow (simplified)
+
+1. Data ingestion (`market_data.py`)
+2. Feature generation (`feature_engine.py`)
+3. SMA calculation (`sma_engine.py`)
+4. Signal generation (`signal_engine.py`)
+5. ML prediction (`ml_model.py`)
+6. Backtesting (`backtester.py`)
+7. Agent interaction (`agents/`)
+
+---
+
+## Documentation
+
+See the `docs/` directory for more detail:
+
+* architecture overview
+* SMA definitions
+* agent design
+
+---
+
+## Notes
+
+This project is structured to be modular. Most components (ML, agents, RAG) can be developed or replaced independently without affecting the rest of the system.
+
+---
+
+## License
+
+Apache 2.0 License
+
+---
