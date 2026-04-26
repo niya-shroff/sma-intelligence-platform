@@ -109,6 +109,15 @@ React-based UI with:
 * Signal display
 * ML output panel
 * Agent chat interface
+* Economic impact simulation dashboard
+
+### Economics Simulation (Mocked)
+
+Currently using mocked data, this module evaluates and injects macroeconomic factors into the platform:
+
+* Federal funds rate changes
+* Inflation data and CPI
+* Simulated impact of macroeconomic variables on SMA strategies and asset classes
 
 ### ML Pipeline
 
@@ -139,12 +148,19 @@ cd sma-intelligence-platform
 
 ### Environment variables
 
-Create a `.env` file:
+Create a `.env` file (local development only):
 
 ```env
 DATABASE_URL=postgresql://user:password@db:5432/sma_db
 REDIS_URL=redis://redis:6379
 KAFKA_BROKER=kafka:9092
+
+# Local Dev API Keys (Required for external integrations and AI agents)
+OPENAI_API_KEY=your_openai_api_key_here
+FINNHUB_API_KEY=your_finnhub_api_key_here
+POLYGON_API_KEY=your_polygon_api_key_here
+ALPHAVANTAGE_API_KEY=your_alphavantage_api_key_here
+FRED_API_KEY=your_fred_api_key_here
 ```
 
 ---
