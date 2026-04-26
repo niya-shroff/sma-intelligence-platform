@@ -2,6 +2,9 @@
 
 An end-to-end platform for building, testing, and analyzing trading strategies based on Simple Moving Averages (SMA), with extensions into machine learning, signal generation, and agent-based analysis. A simulation of Raul's original analysis. Their README is in 'RAUL_README.md'
 
+<img width="800" height="437" alt="ezgif-8631908a4f17ab54" src="https://github.com/user-attachments/assets/4e351661-cb8d-44b9-aa4b-18dc688fba82" />
+
+
 ## Overview
 
 This project brings together market data processing, SMA-based strategy logic, machine learning models, and lightweight AI agents into a single system. It’s designed to support both experimentation and structured analysis of trading signals.
