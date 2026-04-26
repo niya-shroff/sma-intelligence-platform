@@ -73,7 +73,7 @@ function App() {
         <div className="brand">
           <Activity size={28} className="brand-icon" />
           <div className="brand-text">
-            <span>SMA</span> Operations
+            <span>SMA</span> Intelligence Platform
           </div>
         </div>
         <nav className="nav-menu">
