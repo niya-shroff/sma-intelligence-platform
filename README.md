@@ -7,7 +7,7 @@ An end-to-end platform for building, testing, and analyzing trading strategies b
 
 ## Overview
 
-This project brings together market data processing, SMA-based strategy logic, machine learning models, and lightweight AI agents into a single system. It’s designed to support both experimentation and structured analysis of trading signals. As of April 2026, all data is being mocked for simulation purposes. Future revisions will integrate real financial data to support claims and spread awareness of how institutions influence markets. 
+This project brings together market data processing, SMA-based strategy logic, machine learning models, and lightweight AI agents into a single system. It’s designed to support both experimentation and structured analysis of trading signals. **IMPORTANT NOTE: As of April 2026, all data is being mocked for simulation purposes. Future revisions will integrate real financial data to support claims and spread awareness of how institutions influence markets. **
 
 The platform includes:
 
